@@ -1,26 +1,22 @@
 package pl.bykowski.springbootswaggerexample;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/students")
 public class StudentApi {
 
     private List<Student> studentList;
 
     public StudentApi() {
-        this.studentList = Arrays.asList(new Student(1, "Przemek", "Bykowski"));
+        this.studentList = new ArrayList<>();
     }
 
-    @ApiOperation(value = "Find student by id", notes = "provide information about student by id")
     @GetMapping("/{id}")
-    public Student getStudents(@ApiParam(value = "unique id of student", example = "123") @PathVariable int id) {
+    public Student getStudents(@PathVariable int id) {
         return studentList.stream()
                 .filter(student -> student.getId() == id).findFirst().get();
     }
@@ -30,11 +26,8 @@ public class StudentApi {
         return studentList;
     }
 
-
     @PostMapping
     public boolean addStudent(@RequestBody Student student) {
         return studentList.add(student);
     }
 }
-
-
